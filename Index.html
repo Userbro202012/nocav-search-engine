@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NocaV Search Engine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f4f4f9;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        .search-container {
+            margin: 20px auto;
+            max-width: 500px;
+        }
+
+        #search-bar {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #007BFF;
+        }
+
+        .result a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>NocaV Search Engine</h1>
+    <p>Enter a website URL or search query to access sites.</p>
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Enter website URL or search..." />
+        <button onclick="navigate()">Go</button>
+    </div>
+    <div id="results" class="result"></div>
+
+    <script>
+        function isValidUrl(input) {
+            try {
+                const url = new URL(input.startsWith("http") ? input : `https://${input}`);
+                return url.hostname !== "";
+            } catch {
+                return false;
+            }
+        }
+
+        function navigate() {
+            const query = document.getElementById('search-bar').value.trim();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (query) {
+                const proxyBaseUrl = "https://www.croxyproxy.com/";
+                let finalUrl;
+
+                if (isValidUrl(query)) {
+                    const formattedUrl = query.startsWith("http") ? query : `https://${query}`;
+                    finalUrl = `${proxyBaseUrl}?url=${encodeURIComponent(formattedUrl)}`;
+                } else {
+                    const searchUrl = `https://www.nocav.com/search?q=${encodeURIComponent(query)}`;
+                    finalUrl = `${proxyBaseUrl}?url=${encodeURIComponent(searchUrl)}`;
+                }
+
+                resultsDiv.innerHTML = `<a href="${finalUrl}" target="_blank">Access: ${query}</a>`;
+                window.location.href = finalUrl;
+            } else {
+                resultsDiv.textContent = 'Please enter a valid website or search query.';
+            }
+        }
+    </script>
+</body>
+</html>
